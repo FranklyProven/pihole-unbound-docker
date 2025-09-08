@@ -1,8 +1,8 @@
-version: '3.9'
+version: '1'
 services:
   pihole:
     container_name: pihole
-    image: pihole/pihole:2023.03.1 # <- update image version here, see: https://github.com/pi-hole/docker-pi-hole/releases
+    image: pihole/pihole:latest # <- uses latest image version here, see: https://github.com/pi-hole/docker-pi-hole/releases
     hostname: pihole.local
     depends_on:
       - unbound
@@ -17,6 +17,10 @@ services:
       - "8080:80/tcp" # web ui -> http://localhost:8080/admin
       - "53:53/tcp" # DNS tcp port is used as fallback for longer dns messages
       - "53:53/udp" # DNS port
+      - "443:443/tcp" # Default HTTPs Port. FTL will generate a self-signed certificate
+     # - "67:67/udp"  Uncomment the below if using Pi-hole as your DHCP Server
+      
+
 # RECOMMENDED: Uncomment and adapt if you want to persist pihole configurations after restart
 #    volumes:
 #      - "/var/lib/docker/volumes/pihole/pihole:/etc/pihole/"
