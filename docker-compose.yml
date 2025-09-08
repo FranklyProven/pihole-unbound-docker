@@ -1,4 +1,4 @@
-version: '3.9'
+version: '4.0'
 
 services:
   pihole:
@@ -41,8 +41,9 @@ services:
         ipv4_address: 172.21.200.2 # <-- use this ip as dns when connected to pihole_dns_network (i.e. within a docker network)
   
   unbound:
-    build: ./unbound
+    # build: ./unbound # <-- This line is now commented out
     container_name: unbound
+    image: klutchell/unbound:latest # <-- This line is added to use a pre-built image
     hostname: unbound.local
     restart: unless-stopped
     ports:
@@ -61,10 +62,6 @@ networks:
       config:
         - subnet: 172.21.200.0/24
           gateway: 172.21.200.1
-          # The ip_range setting is often omitted when using static IPs,
-          # or configured to a non-conflicting range. Leaving it out here
-          # to reflect that the manual ipv4_address settings take precedence.
-          # ip_range: 172.21.200.10/24 # Example: start assigning IPs from this range
           
 volumes:
   # Define named volumes for persistent Pi-hole data
